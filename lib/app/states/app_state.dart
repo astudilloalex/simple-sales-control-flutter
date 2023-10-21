@@ -10,4 +10,16 @@ class AppState {
   final ThemeData darkTheme;
   final ThemeData lightTheme;
   final ThemeMode themeMode;
+
+  AppState copyWith({
+    ThemeData? darkTheme,
+    ThemeData? lightTheme,
+    ThemeMode? themeMode,
+  }) {
+    return AppState(
+      darkTheme: darkTheme ?? this.darkTheme,
+      lightTheme: lightTheme ?? this.lightTheme,
+      themeMode: themeMode ?? this.themeMode,
+    );
+  }
 }

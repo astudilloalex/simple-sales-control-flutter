@@ -11,11 +11,13 @@ import 'package:hive/hive.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sales_control/app/cubits/app_cubit.dart';
+import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/ui/routes/route_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setupGetIt();
   // Check crash app error with crashlytics
   FlutterError.onError = (details) =>
       FirebaseCrashlytics.instance.recordFlutterFatalError(details);
@@ -32,7 +34,7 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => AppCubit()..load()),
       ],
       child: const MyApp(),
     ),

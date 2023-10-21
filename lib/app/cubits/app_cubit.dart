@@ -10,4 +10,25 @@ class AppCubit extends Cubit<AppState> {
             lightTheme: ThemeData.light(),
           ),
         );
+
+  Future<void> load() async {
+    emit(
+      state.copyWith(
+        lightTheme: lightTheme,
+        darkTheme: darkTheme,
+      ),
+    );
+  }
+
+  ThemeData get darkTheme {
+    return ThemeData.dark().copyWith(
+      useMaterial3: true,
+    );
+  }
+
+  ThemeData get lightTheme {
+    return ThemeData.light().copyWith(
+      useMaterial3: true,
+    );
+  }
 }

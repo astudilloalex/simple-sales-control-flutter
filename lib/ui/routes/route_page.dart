@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_control/app/services/get_it_service.dart';
+import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/ui/pages/onboarding/cubits/onboarding_cubit.dart';
 import 'package:sales_control/ui/pages/onboarding/onboarding_page.dart';
 import 'package:sales_control/ui/pages/sign_in/cubits/sign_in_cubit.dart';
@@ -29,7 +31,9 @@ class RoutePage {
         path: RouteName.signIn,
         name: RouteName.signIn,
         builder: (context, state) => BlocProvider(
-          create: (context) => SignInCubit(),
+          create: (context) => SignInCubit(
+            authService: getIt<AuthService>(),
+          ),
           child: const SignInPage(),
         ),
       ),
@@ -37,7 +41,9 @@ class RoutePage {
         path: RouteName.splash,
         name: RouteName.splash,
         builder: (context, state) => BlocProvider(
-          create: (context) => SplashCubit(),
+          create: (context) => SplashCubit(
+            authService: getIt<AuthService>(),
+          ),
           child: const SplashPage(),
         ),
       ),
