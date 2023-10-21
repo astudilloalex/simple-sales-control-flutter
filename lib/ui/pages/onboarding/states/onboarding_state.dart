@@ -1,0 +1,3 @@
+class OnboardingState {
+  const OnboardingState();
+}

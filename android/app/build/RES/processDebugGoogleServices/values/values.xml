@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">839379203446-mf9749k072ip4lm525rgsesgi9jmhsl4.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">839379203446</string>
+    <string name="google_api_key" translatable="false">AIzaSyCP9nOb2OjRN76aau5qG_497y2vZhTEa5o</string>
+    <string name="google_app_id" translatable="false">1:839379203446:android:403c460545c155d8b2f657</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCP9nOb2OjRN76aau5qG_497y2vZhTEa5o</string>
+    <string name="google_storage_bucket" translatable="false">sales-control-ed5fc.appspot.com</string>
+    <string name="project_id" translatable="false">sales-control-ed5fc</string>
+</resources>

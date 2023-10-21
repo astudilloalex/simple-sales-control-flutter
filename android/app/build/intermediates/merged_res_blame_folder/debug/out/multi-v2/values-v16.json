@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.alexastudillo.sales_control.app-mergeDebugResources-22:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\alex-\\.gradle\\caches\\transforms-3\\e8e07078745eff888d7c80d7d86ec16b\\transformed\\core-1.6.0\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}
