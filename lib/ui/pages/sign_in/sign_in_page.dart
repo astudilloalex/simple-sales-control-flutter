@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sales_control/app/app.dart';
 import 'package:sales_control/app/app_asset.dart';
 import 'package:sales_control/ui/pages/sign_in/cubits/sign_in_cubit.dart';
+import 'package:sales_control/ui/routes/route_name.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -40,12 +42,13 @@ class SignInPage extends StatelessWidget {
                     context.loaderOverlay.show();
                     final String? error =
                         await context.read<SignInCubit>().signInWithGoogle();
-                    if (error != null) {
-                      if (context.mounted) showErrorSnackbar(context, error);
-                      return;
-                    }
                     if (!context.mounted) return;
                     context.loaderOverlay.hide();
+                    if (error != null) {
+                      showErrorSnackbar(context, error);
+                      return;
+                    }
+                    context.goNamed(RouteName.home);
                   },
                   icon: const Icon(FontAwesomeIcons.google),
                   label: Text(AppLocalizations.of(context)!.signInWithGoogle),

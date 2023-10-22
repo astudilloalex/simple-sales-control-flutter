@@ -46,11 +46,12 @@ class AuthService {
 
   Future<Auth> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    if (googleUser == null) throw Exception('user-canceled-login');
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
     final DefaultResponse response = await _repository.signInWithGoogle(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
     final User user = response.data as User;
     return Auth(
