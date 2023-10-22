@@ -46,6 +46,7 @@ dependencies:
   hive: ^4.0.0-dev.2
   intl: ^0.18.1
   isar_flutter_libs: ^4.0.0-dev.14
+  json_annotation: ^4.8.1
   loader_overlay: ^2.3.2
   path_provider: ^2.1.1
   smooth_page_indicator: ^1.1.0
@@ -55,9 +56,11 @@ dependencies:
   
 
 dev_dependencies:
+  build_runner: ^2.4.6
   flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.7.1
   lint: ^2.1.2
 
 # For information on the generic Dart part of this file, see the
