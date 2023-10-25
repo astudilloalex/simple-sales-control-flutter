@@ -15,6 +15,8 @@ import 'package:sales_control/ui/pages/sign_in/cubits/sign_in_cubit.dart';
 import 'package:sales_control/ui/pages/sign_in/sign_in_page.dart';
 import 'package:sales_control/ui/pages/splash/cubits/splash_cubit.dart';
 import 'package:sales_control/ui/pages/splash/splash_page.dart';
+import 'package:sales_control/ui/pages/user/cubits/user_cubit.dart';
+import 'package:sales_control/ui/pages/user/user_page.dart';
 import 'package:sales_control/ui/routes/route_name.dart';
 
 /// Pages availables.
@@ -80,6 +82,16 @@ class RoutePage {
             authService: getIt<AuthService>(),
           ),
           child: const SplashPage(),
+        ),
+      ),
+      GoRoute(
+        path: RouteName.user,
+        name: RouteName.user,
+        builder: (context, state) => BlocProvider(
+          create: (context) => UserCubit(
+            companyService: getIt<CompanyService>(),
+          )..load(),
+          child: const UserPage(),
         ),
       ),
     ],
