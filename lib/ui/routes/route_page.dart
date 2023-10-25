@@ -2,10 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
+import 'package:sales_control/src/company/application/company_service.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_cubit.dart';
 import 'package:sales_control/ui/pages/home/home_page.dart';
 import 'package:sales_control/ui/pages/onboarding/cubits/onboarding_cubit.dart';
 import 'package:sales_control/ui/pages/onboarding/onboarding_page.dart';
+import 'package:sales_control/ui/pages/setting/cubits/setting_cubit.dart';
+import 'package:sales_control/ui/pages/setting/setting_page.dart';
 import 'package:sales_control/ui/pages/sign_in/cubits/sign_in_cubit.dart';
 import 'package:sales_control/ui/pages/sign_in/sign_in_page.dart';
 import 'package:sales_control/ui/pages/splash/cubits/splash_cubit.dart';
@@ -38,11 +41,20 @@ class RoutePage {
         ),
       ),
       GoRoute(
+        path: RouteName.setting,
+        name: RouteName.setting,
+        builder: (context, state) => BlocProvider(
+          create: (context) => SettingCubit(),
+          child: const SettingPage(),
+        ),
+      ),
+      GoRoute(
         path: RouteName.signIn,
         name: RouteName.signIn,
         builder: (context, state) => BlocProvider(
           create: (context) => SignInCubit(
             authService: getIt<AuthService>(),
+            companyService: getIt<CompanyService>(),
           ),
           child: const SignInPage(),
         ),

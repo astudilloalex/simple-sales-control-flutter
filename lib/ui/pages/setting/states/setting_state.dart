@@ -1,0 +1,3 @@
+class SettingState {
+  const SettingState();
+}

@@ -25,7 +25,8 @@ void setupGetIt() {
 
   // Declare services.
   getIt.registerFactory<AuthService>(
-      () => AuthService(getIt<IAuthRepository>()));
+    () => AuthService(getIt<IAuthRepository>()),
+  );
   getIt.registerFactory<CompanyService>(
     () => CompanyService(
       getIt<ICompanyRepository>(),
