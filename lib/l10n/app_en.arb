@@ -1,4 +1,7 @@
 {
+    "myCompany": "My company",
     "salesControl": "Sales control",
-    "signInWithGoogle": "Sign in with Google"
+    "settings": "Settings",
+    "signInWithGoogle": "Sign in with Google",
+    "users": "Users"
 }
