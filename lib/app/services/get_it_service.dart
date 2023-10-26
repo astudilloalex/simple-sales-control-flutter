@@ -7,6 +7,9 @@ import 'package:sales_control/src/auth/infrastructure/firebase_auth_repository.d
 import 'package:sales_control/src/company/application/company_service.dart';
 import 'package:sales_control/src/company/domain/i_company_repository.dart';
 import 'package:sales_control/src/company/infrastructure/firebase_company_repository.dart';
+import 'package:sales_control/src/role/application/role_service.dart';
+import 'package:sales_control/src/role/domain/i_role_repository.dart';
+import 'package:sales_control/src/role/infrastructure/firebase_role_repository.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -22,6 +25,9 @@ void setupGetIt() {
   getIt.registerLazySingleton<ICompanyRepository>(
     () => FirebaseCompanyRepository(firestore),
   );
+  getIt.registerLazySingleton<IRoleRepository>(
+    () => FirebaseRoleRepository(firestore),
+  );
 
   // Declare services.
   getIt.registerFactory<AuthService>(
@@ -32,5 +38,8 @@ void setupGetIt() {
       getIt<ICompanyRepository>(),
       authRepository: getIt<IAuthRepository>(),
     ),
+  );
+  getIt.registerFactory<RoleService>(
+    () => RoleService(getIt<IRoleRepository>()),
   );
 }
