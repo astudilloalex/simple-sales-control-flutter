@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_control/ui/pages/setting/cubits/setting_cubit.dart';
 import 'package:sales_control/ui/routes/route_name.dart';
 
 class SettingPage extends StatelessWidget {
@@ -17,7 +19,16 @@ class SettingPage extends StatelessWidget {
         maxCrossAxisExtent: 200.0,
         children: [
           InkWell(
-            onTap: () => context.pushNamed(RouteName.editCompany),
+            onTap: () {
+              context.read<SettingCubit>().current.then((value) {
+                if (value != null) {
+                  context.pushNamed(
+                    RouteName.editCompany,
+                    pathParameters: {'id': value.uid},
+                  );
+                }
+              });
+            },
             child: Card(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,0 +1,3 @@
+class EditUserState {
+  const EditUserState();
+}
