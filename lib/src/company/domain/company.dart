@@ -17,6 +17,20 @@ class Company {
   final Auth owner;
   final List<Auth> users;
 
+  Company copyWith({
+    String? id,
+    String? name,
+    Auth? owner,
+    List<Auth>? users,
+  }) {
+    return Company(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      owner: owner ?? this.owner,
+      users: users ?? this.users,
+    );
+  }
+
   factory Company.fromJson(Map<String, dynamic> json) =>
       _$CompanyFromJson(json);
 

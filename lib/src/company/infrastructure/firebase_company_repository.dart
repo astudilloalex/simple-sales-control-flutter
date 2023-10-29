@@ -41,10 +41,9 @@ class FirebaseCompanyRepository implements ICompanyRepository {
 
   @override
   Future<DefaultResponse> update(Company company) async {
-    await _client
-        .collection('companies')
-        .doc(company.id)
-        .update(company.toJson());
+    final Map<String, dynamic> data = company.toJson();
+    data.removeWhere((key, value) => key == 'owner' || key == 'users');
+    await _client.collection('companies').doc(company.id).update(data);
     return DefaultResponse(data: company);
   }
 }

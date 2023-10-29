@@ -1,7 +1,9 @@
 {
     "editCompany": "Edit company",
     "myCompany": "My company",
+    "name": "Name",
     "salesControl": "Sales control",
+    "save": "Save",
     "settings": "Settings",
     "signInWithGoogle": "Sign in with Google",
     "users": "Users"

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sales_control/src/auth/domain/auth.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_drawer_cubit.dart';
 import 'package:sales_control/ui/pages/home/states/home_drawer_state.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sales_control/ui/routes/route_name.dart';
 
 class HomeDrawer extends StatelessWidget {
