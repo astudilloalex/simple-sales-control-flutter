@@ -43,7 +43,7 @@ class RoutePage {
       ),
       GoRoute(
         path: RouteName.editUser,
-        name: RouteName.editCompany,
+        name: RouteName.editUser,
         builder: (context, state) => BlocProvider(
           create: (context) => EditUserCubit(
             companyService: getIt<CompanyService>(),

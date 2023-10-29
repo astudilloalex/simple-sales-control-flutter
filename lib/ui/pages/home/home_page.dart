@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sales_control/app/services/get_it_service.dart';
+import 'package:sales_control/src/auth/application/auth_service.dart';
+import 'package:sales_control/ui/pages/home/cubits/home_drawer_cubit.dart';
+import 'package:sales_control/ui/pages/home/widgets/home_drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,6 +16,13 @@ class HomePage extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.salesControl),
         centerTitle: true,
       ),
+      drawer: BlocProvider(
+        create: (context) => HomeDrawerCubit(
+          authService: getIt<AuthService>(),
+        )..load(),
+        child: const HomeDrawer(),
+      ),
+      body: const Placeholder(),
     );
   }
 }

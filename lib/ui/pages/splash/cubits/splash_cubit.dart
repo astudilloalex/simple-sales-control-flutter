@@ -15,7 +15,7 @@ class SplashCubit extends Cubit<SplashState> {
     try {
       final Auth? auth = await authService.current;
       if (auth == null) return RouteName.signIn;
-      return RouteName.onboarding;
+      return RouteName.home;
     } on Exception {
       return RouteName.signIn;
     }
