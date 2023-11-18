@@ -3,12 +3,15 @@ import 'package:go_router/go_router.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/company/application/company_service.dart';
+import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
 import 'package:sales_control/ui/pages/edit_company/edit_company_page.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_cubit.dart';
 import 'package:sales_control/ui/pages/home/home_page.dart';
 import 'package:sales_control/ui/pages/onboarding/cubits/onboarding_cubit.dart';
 import 'package:sales_control/ui/pages/onboarding/onboarding_page.dart';
+import 'package:sales_control/ui/pages/product/cubits/product_cubit.dart';
+import 'package:sales_control/ui/pages/product/product_page.dart';
 import 'package:sales_control/ui/pages/setting/cubits/setting_cubit.dart';
 import 'package:sales_control/ui/pages/setting/setting_page.dart';
 import 'package:sales_control/ui/pages/sign_in/cubits/sign_in_cubit.dart';
@@ -53,6 +56,16 @@ class RoutePage {
         builder: (context, state) => BlocProvider(
           create: (context) => OnboardingCubit(),
           child: const OnboardingPage(),
+        ),
+      ),
+      GoRoute(
+        path: RouteName.product,
+        name: RouteName.product,
+        builder: (context, state) => BlocProvider(
+          create: (context) => ProductCubit(
+            service: getIt<ProductService>(),
+          ),
+          child: const ProductPage(),
         ),
       ),
       GoRoute(

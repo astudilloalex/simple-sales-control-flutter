@@ -1,0 +1,3 @@
+class ProductState {
+  const ProductState();
+}

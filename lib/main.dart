@@ -12,6 +12,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
+import 'package:sales_control/app/states/app_state.dart';
 import 'package:sales_control/ui/routes/route_page.dart';
 
 Future<void> main() async {
@@ -54,13 +55,17 @@ class MyApp extends StatelessWidget {
         ),
       ),
       overlayColor: Colors.black.withOpacity(0.7),
-      child: MaterialApp.router(
-        darkTheme: context.select((AppCubit cubit) => cubit.state.darkTheme),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        routerConfig: RoutePage.router,
-        supportedLocales: AppLocalizations.supportedLocales,
-        theme: context.select((AppCubit cubit) => cubit.state.lightTheme),
-        themeMode: context.select((AppCubit cubit) => cubit.state.themeMode),
+      child: BlocBuilder<AppCubit, AppState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            darkTheme: state.darkTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            routerConfig: RoutePage.router,
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: state.lightTheme,
+            themeMode: state.themeMode,
+          );
+        },
       ),
     );
   }
