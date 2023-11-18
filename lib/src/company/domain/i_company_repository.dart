@@ -8,5 +8,5 @@ abstract class ICompanyRepository {
   Future<DefaultResponse> findAll(String uid);
   Future<DefaultResponse> findById(String id);
   Future<DefaultResponse> save(Company company);
-  Future<DefaultResponse> update(Company company);
+  Future<DefaultResponse> update(Company company, {bool updateUsers = false});
 }

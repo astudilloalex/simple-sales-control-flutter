@@ -5,8 +5,6 @@ import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/company/application/company_service.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
 import 'package:sales_control/ui/pages/edit_company/edit_company_page.dart';
-import 'package:sales_control/ui/pages/edit_user/cubits/edit_user_cubit.dart';
-import 'package:sales_control/ui/pages/edit_user/edit_user_page.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_cubit.dart';
 import 'package:sales_control/ui/pages/home/home_page.dart';
 import 'package:sales_control/ui/pages/onboarding/cubits/onboarding_cubit.dart';
@@ -39,16 +37,6 @@ class RoutePage {
             companyService: getIt<CompanyService>(),
           ),
           child: const EditCompanyPage(),
-        ),
-      ),
-      GoRoute(
-        path: RouteName.editUser,
-        name: RouteName.editUser,
-        builder: (context, state) => BlocProvider(
-          create: (context) => EditUserCubit(
-            companyService: getIt<CompanyService>(),
-          ),
-          child: const EditUserPage(),
         ),
       ),
       GoRoute(

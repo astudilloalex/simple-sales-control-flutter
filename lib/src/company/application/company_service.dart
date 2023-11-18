@@ -40,8 +40,8 @@ class CompanyService {
     return company;
   }
 
-  Future<Company> update(Company company) async {
-    await _repository.update(company);
+  Future<Company> update(Company company, {bool updateUsers = false}) async {
+    await _repository.update(company, updateUsers: updateUsers);
     return company;
   }
 }

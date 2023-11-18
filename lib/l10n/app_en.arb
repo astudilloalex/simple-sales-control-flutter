@@ -1,7 +1,9 @@
 {
+    "add": "Add",
     "editCompany": "Edit company",
     "myCompany": "My company",
     "name": "Name",
+    "products": "Products",
     "salesControl": "Sales control",
     "save": "Save",
     "settings": "Settings",

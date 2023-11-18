@@ -7,6 +7,7 @@ import 'package:sales_control/src/auth/domain/auth.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_drawer_cubit.dart';
 import 'package:sales_control/ui/pages/home/states/home_drawer_state.dart';
 import 'package:sales_control/ui/routes/route_name.dart';
+import 'package:sales_control/ui/widgets/qr_modal_bottom_sheet.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
@@ -22,12 +23,46 @@ class HomeDrawer extends StatelessWidget {
               builder: (context, state) {
                 return Column(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        state.photoURL ??
-                            'https://i.postimg.cc/3wttDx6S/user-circular-avatar.png',
+                    SizedBox(
+                      height: 80.0,
+                      child: Center(
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Center(
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  state.photoURL ??
+                                      'https://i.postimg.cc/3wttDx6S/user-circular-avatar.png',
+                                ),
+                                radius: 35.0,
+                              ),
+                            ),
+                            Positioned(
+                              right: 0.0,
+                              top: 15.0,
+                              child: IconButton(
+                                onPressed: state.uid.isEmpty
+                                    ? null
+                                    : () {
+                                        if (Scaffold.of(context).isDrawerOpen) {
+                                          context.pop();
+                                        }
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return QRModalBottomSheet(
+                                              data: state.uid,
+                                            );
+                                          },
+                                        );
+                                      },
+                                icon: const Icon(FontAwesomeIcons.shareNodes),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      radius: 35.0,
                     ),
                     const SizedBox(height: 5.0),
                     Text(state.displayName ?? ''),
@@ -43,6 +78,16 @@ class HomeDrawer extends StatelessWidget {
                 );
               },
             ),
+          ),
+          ListTile(
+            leading: const Icon(FontAwesomeIcons.productHunt),
+            title: Text(AppLocalizations.of(context)!.products),
+            onTap: () {
+              if (Scaffold.of(context).isDrawerOpen) {
+                context.pop();
+              }
+              context.pushNamed(RouteName.setting);
+            },
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.gear),

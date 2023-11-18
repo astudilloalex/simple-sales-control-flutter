@@ -21,6 +21,17 @@ void showErrorSnackbar(BuildContext context, String errorCode) {
   );
 }
 
+void showSuccessfulSnackbar(BuildContext context, String errorCode) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: SelectableText(messageFromCode(errorCode, context)),
+      backgroundColor: Colors.green,
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
+}
+
 String messageFromCode(String code, BuildContext context) {
   final AppLocalizations localizations = AppLocalizations.of(context)!;
   final Map<String, String> errorMessages = {

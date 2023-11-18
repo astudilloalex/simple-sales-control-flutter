@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sales_control/ui/pages/user/cubits/user_cubit.dart';
 import 'package:sales_control/ui/pages/user/states/user_state.dart';
 import 'package:sales_control/ui/pages/user/widgets/user_tile.dart';
+import 'package:sales_control/ui/widgets/qr_scan_modal_bottom_sheet.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
@@ -30,7 +31,20 @@ class UserPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet<String?>(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: const QRScanModalBottomSheet(),
+            ),
+          ).then((value) {
+            context.read<UserCubit>().addUser(value ?? '');
+          });
+        },
         child: const Icon(FontAwesomeIcons.plus),
       ),
     );

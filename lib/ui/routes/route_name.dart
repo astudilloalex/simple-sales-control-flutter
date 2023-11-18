@@ -5,7 +5,6 @@ class RouteName {
   const RouteName._();
 
   static const String editCompany = '/edit-company/:id';
-  static const String editUser = '/edit-user/:id';
   static const String home = '/home';
   static const String onboarding = '/onboarding';
   static const String setting = '/setting';
