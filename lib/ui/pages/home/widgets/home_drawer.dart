@@ -86,7 +86,7 @@ class HomeDrawer extends StatelessWidget {
               if (Scaffold.of(context).isDrawerOpen) {
                 context.pop();
               }
-              context.pushNamed(RouteName.setting);
+              context.pushNamed(RouteName.product);
             },
           ),
           ListTile(

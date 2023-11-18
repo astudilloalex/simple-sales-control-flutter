@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/app/states/app_state.dart';
+import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/ui/routes/route_page.dart';
 
 Future<void> main() async {
@@ -30,12 +31,18 @@ Future<void> main() async {
     );
     return true;
   };
+  // Use hive to save local data.
   final Directory directory = await getApplicationDocumentsDirectory();
   Hive.defaultDirectory = directory.path;
+  // Run the app.
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AppCubit()..load()),
+        BlocProvider(
+          create: (context) => AppCubit(
+            authService: getIt<AuthService>(),
+          )..load(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -55,8 +62,14 @@ class MyApp extends StatelessWidget {
         ),
       ),
       overlayColor: Colors.black.withOpacity(0.7),
+      // Use cubit to manage state globally.
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
+          if (state.loading) {
+            context.loaderOverlay.show();
+          } else {
+            context.loaderOverlay.hide();
+          }
           return MaterialApp.router(
             darkTheme: state.darkTheme,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

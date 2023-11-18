@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/company/application/company_service.dart';
@@ -46,7 +47,9 @@ class RoutePage {
         path: RouteName.home,
         name: RouteName.home,
         builder: (context, state) => BlocProvider(
-          create: (context) => HomeCubit(),
+          create: (context) => HomeCubit(
+            authService: getIt<AuthService>(),
+          )..load(),
           child: const HomePage(),
         ),
       ),
@@ -64,7 +67,8 @@ class RoutePage {
         builder: (context, state) => BlocProvider(
           create: (context) => ProductCubit(
             service: getIt<ProductService>(),
-          ),
+            companyId: context.read<AppCubit>().state.companyId,
+          )..load(),
           child: const ProductPage(),
         ),
       ),
