@@ -7,6 +7,8 @@ import 'package:sales_control/src/company/application/company_service.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
 import 'package:sales_control/ui/pages/edit_company/edit_company_page.dart';
+import 'package:sales_control/ui/pages/edit_product/cubits/edit_product_cubit.dart';
+import 'package:sales_control/ui/pages/edit_product/edit_product_page.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_cubit.dart';
 import 'package:sales_control/ui/pages/home/home_page.dart';
 import 'package:sales_control/ui/pages/onboarding/cubits/onboarding_cubit.dart';
@@ -33,6 +35,16 @@ class RoutePage {
     initialLocation: RouteName.splash,
     routes: [
       GoRoute(
+        path: RouteName.addProduct,
+        name: RouteName.addProduct,
+        builder: (context, state) => BlocProvider(
+          create: (context) => EditProductCubit(
+            service: getIt<ProductService>(),
+          ),
+          child: const EditProductPage(),
+        ),
+      ),
+      GoRoute(
         path: RouteName.editCompany,
         name: RouteName.editCompany,
         builder: (context, state) => BlocProvider(
@@ -41,6 +53,17 @@ class RoutePage {
             companyService: getIt<CompanyService>(),
           ),
           child: const EditCompanyPage(),
+        ),
+      ),
+      GoRoute(
+        path: RouteName.editProduct,
+        name: RouteName.editProduct,
+        builder: (context, state) => BlocProvider(
+          create: (context) => EditProductCubit(
+            id: state.pathParameters['id'] ?? '',
+            service: getIt<ProductService>(),
+          ),
+          child: const EditProductPage(),
         ),
       ),
       GoRoute(

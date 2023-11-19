@@ -1,0 +1,3 @@
+class EditProductState {
+  const EditProductState();
+}

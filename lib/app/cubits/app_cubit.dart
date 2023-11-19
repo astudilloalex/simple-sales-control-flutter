@@ -29,14 +29,11 @@ class AppCubit extends Cubit<AppState> {
   }
 
   ThemeData get darkTheme {
-    return ThemeData.dark().copyWith(
-      useMaterial3: true,
-    );
+    return ThemeData.dark().copyWith();
   }
 
   ThemeData get lightTheme {
     return ThemeData.light().copyWith(
-      useMaterial3: true,
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
         errorBorder: OutlineInputBorder(),

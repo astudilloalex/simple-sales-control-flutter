@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlobalLoaderOverlay(
       useDefaultLoading: false,
-      overlayWidget: const Center(
+      overlayWidgetBuilder: (progress) => const Center(
         child: SpinKitPulsingGrid(
           color: Colors.white,
         ),

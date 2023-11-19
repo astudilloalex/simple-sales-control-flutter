@@ -4,7 +4,9 @@ class RouteName {
   // prevents instantiation and extension.
   const RouteName._();
 
+  static const String addProduct = '/add-product';
   static const String editCompany = '/edit-company/:id';
+  static const String editProduct = '/edit-product/:id';
   static const String home = '/home';
   static const String onboarding = '/onboarding';
   static const String product = '/product';
