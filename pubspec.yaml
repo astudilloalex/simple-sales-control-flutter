@@ -53,6 +53,7 @@ dependencies:
   json_annotation: ^4.8.1
   loader_overlay: ^3.0.0
   mobile_scanner: ^3.5.2
+  path: ^1.8.3
   path_provider: ^2.1.1
   qr_flutter: ^4.1.0
   smooth_page_indicator: ^1.1.0
