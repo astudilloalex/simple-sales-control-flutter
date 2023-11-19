@@ -23,7 +23,7 @@ class FirebaseFileRepository implements IFileRepository {
         .ref()
         .child('images/${_generateId()}${path.extension(file.path)}')
         .putFile(file);
-    return DefaultResponse(data: task.ref.getDownloadURL());
+    return DefaultResponse(data: await task.ref.getDownloadURL());
   }
 
   String _generateId([int length = 20]) {

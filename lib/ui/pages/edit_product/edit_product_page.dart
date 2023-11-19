@@ -24,6 +24,7 @@ class EditProductPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: EditProductForm(),
           ),
+          SizedBox(height: 16.0),
         ],
       ),
     );

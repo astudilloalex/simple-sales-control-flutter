@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sales_control/app/app.dart';
+import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/src/product/domain/product.dart';
 import 'package:sales_control/ui/pages/edit_product/cubits/edit_product_cubit.dart';
 
@@ -26,7 +28,7 @@ class _EditProductFormState extends State<EditProductForm> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
 
-  List<XFile?> imageList = [null, null, null];
+  List<String?> imageUrls = [null, null, null];
 
   @override
   void dispose() {
@@ -41,6 +43,7 @@ class _EditProductFormState extends State<EditProductForm> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
           TextFormField(
@@ -50,6 +53,12 @@ class _EditProductFormState extends State<EditProductForm> {
             ),
             maxLength: 100,
             keyboardType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.trim().length < 3) {
+                return AppLocalizations.of(context)!.invalidName;
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16.0),
           TextFormField(
@@ -68,6 +77,12 @@ class _EditProductFormState extends State<EditProductForm> {
             decoration: InputDecoration(
               labelText: AppLocalizations.of(context)!.price,
             ),
+            validator: (value) {
+              if (value == null || double.tryParse(value.trim()) == null) {
+                return AppLocalizations.of(context)!.invalidPrice;
+              }
+              return null;
+            },
             keyboardType: TextInputType.number,
           ),
           if (context.read<EditProductCubit>().id == null)
@@ -78,6 +93,15 @@ class _EditProductFormState extends State<EditProductForm> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.quantity,
               ),
+              validator: (value) {
+                if (value == null || double.tryParse(value.trim()) == null) {
+                  return AppLocalizations.of(context)!.invalidQuantity;
+                }
+                if (double.parse(value.trim()) < 0) {
+                  return AppLocalizations.of(context)!.invalidQuantity;
+                }
+                return null;
+              },
               keyboardType: TextInputType.number,
             ),
           const SizedBox(height: 16.0),
@@ -102,11 +126,11 @@ class _EditProductFormState extends State<EditProductForm> {
                             child: InkWell(
                               onTap: () => _pickImage(0),
                               child: Center(
-                                child: imageList[0] == null
+                                child: imageUrls[0] == null
                                     ? const FaIcon(FontAwesomeIcons.plus)
                                     : Center(
-                                        child: Image.file(
-                                          File(imageList[0]!.path),
+                                        child: Image.network(
+                                          imageUrls[0]!,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                         ),
@@ -114,7 +138,7 @@ class _EditProductFormState extends State<EditProductForm> {
                               ),
                             ),
                           ),
-                          if (imageList[0] != null)
+                          if (imageUrls[0] != null)
                             SizedBox(
                               width: double.infinity,
                               child: InkWell(
@@ -144,17 +168,17 @@ class _EditProductFormState extends State<EditProductForm> {
                             child: InkWell(
                               onTap: () => _pickImage(1),
                               child: Center(
-                                child: imageList[1] == null
+                                child: imageUrls[1] == null
                                     ? const FaIcon(FontAwesomeIcons.plus)
-                                    : Image.file(
-                                        File(imageList[1]!.path),
+                                    : Image.network(
+                                        imageUrls[1]!,
                                         width: double.infinity,
                                         fit: BoxFit.cover,
                                       ),
                               ),
                             ),
                           ),
-                          if (imageList.elementAtOrNull(1) != null)
+                          if (imageUrls[1] != null)
                             SizedBox(
                               width: double.infinity,
                               child: InkWell(
@@ -184,17 +208,17 @@ class _EditProductFormState extends State<EditProductForm> {
                             child: InkWell(
                               onTap: () => _pickImage(2),
                               child: Center(
-                                child: imageList[2] == null
+                                child: imageUrls[2] == null
                                     ? const FaIcon(FontAwesomeIcons.plus)
-                                    : Image.file(
-                                        File(imageList[2]!.path),
+                                    : Image.network(
+                                        imageUrls[2]!,
                                         width: double.infinity,
                                         fit: BoxFit.cover,
                                       ),
                               ),
                             ),
                           ),
-                          if (imageList[2] != null)
+                          if (imageUrls[2] != null)
                             SizedBox(
                               width: double.infinity,
                               child: InkWell(
@@ -222,23 +246,29 @@ class _EditProductFormState extends State<EditProductForm> {
           // save button
           ElevatedButton.icon(
             onPressed: () async {
+              if (!formKey.currentState!.validate()) return;
               context.loaderOverlay.show();
+              final List<String> photoUrls = [];
+              for (final String? url in imageUrls) {
+                if (url != null) photoUrls.add(url);
+              }
+              final Product product = Product(
+                name: nameController.text.trim(),
+                companyId: context.read<AppCubit>().state.companyId,
+                description: descriptionController.text.trim(),
+                price: double.tryParse(priceController.text.trim()) ?? 0.0,
+                quantity:
+                    double.tryParse(quantityController.text.trim()) ?? 0.0,
+                photoUrls: photoUrls,
+              );
               final String? error =
-                  await context.read<EditProductCubit>().addProduct(
-                        Product(
-                          name: nameController.text.trim(),
-                          description: descriptionController.text.trim(),
-                          price: double.tryParse(priceController.text.trim()) ??
-                              0.0,
-                          quantity:
-                              double.tryParse(quantityController.text.trim()) ??
-                                  0.0,
-                        ),
-                      );
+                  await context.read<EditProductCubit>().addProduct(product);
               if (!context.mounted) return;
               context.loaderOverlay.hide();
               if (error != null) {
                 showErrorSnackbar(context, error);
+              } else {
+                context.pop(product);
               }
             },
             icon: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
@@ -250,28 +280,45 @@ class _EditProductFormState extends State<EditProductForm> {
   }
 
   Future<void> _pickImage(int index) async {
-    const int maxFileSizeInBytes = 2 * 1048576;
-    final ImagePicker picker = ImagePicker();
-    final XFile? xFile = await picker.pickImage(source: ImageSource.camera);
-    if (xFile == null) return;
-    final Uint8List data = await xFile.readAsBytes();
-    if (!mounted) return;
-    if (data.length > maxFileSizeInBytes) {
-      showErrorSnackbar(
-        context,
-        AppLocalizations.of(context)!.fileSizeExceeded,
-      );
-    } else {
-      setState(() {
-        imageList[index] = xFile;
-      });
+    try {
+      context.loaderOverlay.show();
+      const int maxFileSizeInBytes = 2 * 1048576;
+      final ImagePicker picker = ImagePicker();
+      final XFile? xFile = await picker.pickImage(source: ImageSource.camera);
+      if (xFile == null) return;
+      final Uint8List data = await xFile.readAsBytes();
+      if (!mounted) return;
+      if (data.length > maxFileSizeInBytes) {
+        showErrorSnackbar(
+          context,
+          AppLocalizations.of(context)!.fileSizeExceeded,
+        );
+      } else {
+        final String url =
+            await context.read<EditProductCubit>().addImage(File(xFile.path));
+        setState(() {
+          imageUrls[index] = url;
+        });
+      }
+    } on Exception catch (e) {
+      if (mounted) showErrorSnackbar(context, e.toString());
+    } finally {
+      if (mounted) context.loaderOverlay.hide();
     }
   }
 
-  void _removeImage(int index) {
-    if (imageList[index] == null) return;
-    setState(() {
-      imageList[index] = null;
-    });
+  Future<void> _removeImage(int index) async {
+    if (imageUrls[index] == null) return;
+    try {
+      context.loaderOverlay.show();
+      await context.read<EditProductCubit>().removeImage(imageUrls[index]!);
+      setState(() {
+        imageUrls[index] = null;
+      });
+    } on Exception catch (e) {
+      if (mounted) showErrorSnackbar(context, e.toString());
+    } finally {
+      if (mounted) context.loaderOverlay.hide();
+    }
   }
 }

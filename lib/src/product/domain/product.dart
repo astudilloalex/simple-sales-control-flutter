@@ -7,6 +7,7 @@ class Product {
   const Product({
     this.id = '',
     this.name = '',
+    this.companyId = '',
     this.description,
     this.photoUrls = const [],
     this.price = 0.0,
@@ -14,6 +15,7 @@ class Product {
   });
 
   final String id;
+  final String companyId;
   final String name;
   final String? description;
   final List<String> photoUrls;
@@ -23,6 +25,7 @@ class Product {
   Product copyWith({
     String? id,
     String? name,
+    String? companyId,
     String? description,
     List<String>? photoUrls,
     double? price,
@@ -32,6 +35,7 @@ class Product {
       id: id ?? this.id,
       description: description ?? this.description,
       name: name ?? this.name,
+      companyId: companyId ?? this.companyId,
       photoUrls: photoUrls ?? this.photoUrls,
       price: price ?? this.price,
       quantity: quantity ?? this.quantity,

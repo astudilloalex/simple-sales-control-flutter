@@ -4,6 +4,7 @@ import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/company/application/company_service.dart';
+import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
 import 'package:sales_control/ui/pages/edit_company/edit_company_page.dart';
@@ -39,6 +40,7 @@ class RoutePage {
         name: RouteName.addProduct,
         builder: (context, state) => BlocProvider(
           create: (context) => EditProductCubit(
+            fileService: getIt<FileService>(),
             service: getIt<ProductService>(),
           ),
           child: const EditProductPage(),
@@ -60,6 +62,7 @@ class RoutePage {
         name: RouteName.editProduct,
         builder: (context, state) => BlocProvider(
           create: (context) => EditProductCubit(
+            fileService: getIt<FileService>(),
             id: state.pathParameters['id'] ?? '',
             service: getIt<ProductService>(),
           ),

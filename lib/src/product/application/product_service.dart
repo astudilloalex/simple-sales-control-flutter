@@ -21,4 +21,12 @@ class ProductService {
         .map((json) => Product.fromJson(json as Map<String, dynamic>))
         .toList();
   }
+
+  Future<Product> save(Product product) async {
+    final DefaultResponse response = await _repository.save(
+      product.companyId,
+      product,
+    );
+    return Product.fromJson(response.data as Map<String, dynamic>);
+  }
 }
