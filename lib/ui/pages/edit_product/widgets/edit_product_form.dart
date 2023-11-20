@@ -40,6 +40,12 @@ class _EditProductFormState extends State<EditProductForm> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadProduct();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
@@ -85,25 +91,24 @@ class _EditProductFormState extends State<EditProductForm> {
             },
             keyboardType: TextInputType.number,
           ),
-          if (context.read<EditProductCubit>().id == null)
-            const SizedBox(height: 16.0),
-          if (context.read<EditProductCubit>().id == null)
-            TextFormField(
-              controller: quantityController,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.quantity,
-              ),
-              validator: (value) {
-                if (value == null || double.tryParse(value.trim()) == null) {
-                  return AppLocalizations.of(context)!.invalidQuantity;
-                }
-                if (double.parse(value.trim()) < 0) {
-                  return AppLocalizations.of(context)!.invalidQuantity;
-                }
-                return null;
-              },
-              keyboardType: TextInputType.number,
+          const SizedBox(height: 16.0),
+          TextFormField(
+            controller: quantityController,
+            readOnly: context.read<EditProductCubit>().id != null,
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.quantity,
             ),
+            validator: (value) {
+              if (value == null || double.tryParse(value.trim()) == null) {
+                return AppLocalizations.of(context)!.invalidQuantity;
+              }
+              if (double.parse(value.trim()) < 0) {
+                return AppLocalizations.of(context)!.invalidQuantity;
+              }
+              return null;
+            },
+            keyboardType: TextInputType.number,
+          ),
           const SizedBox(height: 16.0),
           Text(AppLocalizations.of(context)!.images),
           const SizedBox(height: 16.0),
@@ -245,38 +250,65 @@ class _EditProductFormState extends State<EditProductForm> {
           const SizedBox(height: 16.0),
           // save button
           ElevatedButton.icon(
-            onPressed: () async {
-              if (!formKey.currentState!.validate()) return;
-              context.loaderOverlay.show();
-              final List<String> photoUrls = [];
-              for (final String? url in imageUrls) {
-                if (url != null) photoUrls.add(url);
-              }
-              final Product product = Product(
-                name: nameController.text.trim(),
-                companyId: context.read<AppCubit>().state.companyId,
-                description: descriptionController.text.trim(),
-                price: double.tryParse(priceController.text.trim()) ?? 0.0,
-                quantity:
-                    double.tryParse(quantityController.text.trim()) ?? 0.0,
-                photoUrls: photoUrls,
-              );
-              final String? error =
-                  await context.read<EditProductCubit>().addProduct(product);
-              if (!context.mounted) return;
-              context.loaderOverlay.hide();
-              if (error != null) {
-                showErrorSnackbar(context, error);
-              } else {
-                context.pop(product);
-              }
-            },
+            onPressed: addOrUpdateProduct,
             icon: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
             label: Text(AppLocalizations.of(context)!.save),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> addOrUpdateProduct() async {
+    if (!formKey.currentState!.validate()) return;
+    context.loaderOverlay.show();
+    final EditProductCubit cubit = context.read<EditProductCubit>();
+    final List<String> photoUrls = [];
+    for (final String? url in imageUrls) {
+      if (url != null) photoUrls.add(url);
+    }
+    final Product product = Product(
+      id: cubit.id ?? '',
+      name: nameController.text.trim(),
+      companyId: context.read<AppCubit>().state.companyId,
+      description: descriptionController.text.trim().isEmpty
+          ? null
+          : descriptionController.text.trim(),
+      price: double.tryParse(priceController.text.trim()) ?? 0.0,
+      quantity: double.tryParse(quantityController.text.trim()) ?? 0.0,
+      photoUrls: photoUrls,
+    );
+    final String? error = cubit.id == null
+        ? await cubit.addProduct(product)
+        : await cubit.updateProduct(product);
+    if (!context.mounted) return;
+    context.loaderOverlay.hide();
+    if (error != null) {
+      showErrorSnackbar(context, error);
+    } else {
+      context.pop(product);
+    }
+  }
+
+  Future<void> loadProduct() async {
+    final String companyId = context.read<AppCubit>().state.companyId;
+    context.loaderOverlay.show();
+    final EditProductCubit cubit = context.read<EditProductCubit>();
+    final String? error = await cubit.loadProduct(companyId);
+    if (!mounted) return;
+    context.loaderOverlay.hide();
+    if (error != null) showErrorSnackbar(context, error);
+    final Product? product = cubit.state.product;
+    if (product == null) return;
+    nameController.text = product.name;
+    descriptionController.text = product.description ?? '';
+    priceController.text = product.price.toStringAsFixed(2);
+    quantityController.text = product.quantity.toStringAsFixed(2);
+    setState(() {
+      imageUrls[0] = product.photoUrls.elementAtOrNull(0);
+      imageUrls[1] = product.photoUrls.elementAtOrNull(1);
+      imageUrls[2] = product.photoUrls.elementAtOrNull(2);
+    });
   }
 
   Future<void> _pickImage(int index) async {

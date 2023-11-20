@@ -17,9 +17,32 @@ class EditProductCubit extends Cubit<EditProductState> {
   final ProductService service;
   final String? id;
 
+  Future<String?> loadProduct(String companyId) async {
+    Product? product;
+    try {
+      if (id == null) return null;
+      emit(state.copyWith(loading: true));
+      product = await service.getById(companyId, id ?? '');
+    } catch (e) {
+      return e.toString();
+    } finally {
+      emit(state.copyWith(loading: false, product: product));
+    }
+    return null;
+  }
+
   Future<String?> addProduct(Product product) async {
     try {
       await service.save(product);
+    } catch (e) {
+      return e.toString();
+    }
+    return null;
+  }
+
+  Future<String?> updateProduct(Product product) async {
+    try {
+      await service.update(product);
     } catch (e) {
       return e.toString();
     }

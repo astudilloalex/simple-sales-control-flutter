@@ -29,4 +29,17 @@ class ProductService {
     );
     return Product.fromJson(response.data as Map<String, dynamic>);
   }
+
+  Future<Product> update(Product product) async {
+    final DefaultResponse response = await _repository.update(
+      product.companyId,
+      product,
+    );
+    return Product.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<Product?> getById(String companyId, String id) async {
+    final DefaultResponse response = await _repository.findById(companyId, id);
+    return Product.fromJson(response.data as Map<String, dynamic>);
+  }
 }

@@ -40,4 +40,19 @@ class ProductCubit extends Cubit<ProductState> {
       );
     }
   }
+
+  void addProduct(Product? product) {
+    if (product == null) return;
+    emit(state.copyWith(products: [...state.products, product]));
+  }
+
+  void updateProduct(Product? product) {
+    if (product == null) return;
+    final int index =
+        state.products.indexWhere((element) => element.id == product.id);
+    if (index < 0) return;
+    final List<Product> products = state.products;
+    products[index] = product;
+    emit(state.copyWith(products: [...products]));
+  }
 }
