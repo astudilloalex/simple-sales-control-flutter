@@ -15,9 +15,12 @@
     "products": "Products",
     "quantity": "Quantity",
     "reload": "Reload",
+    "replenish": "Replenish",
     "salesControl": "Sales control",
     "save": "Save",
+    "sell": "Sell",
     "settings": "Settings",
     "signInWithGoogle": "Sign in with Google",
+    "update": "Update",
     "users": "Users"
 }

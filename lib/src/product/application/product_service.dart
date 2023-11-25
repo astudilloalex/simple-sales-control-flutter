@@ -42,4 +42,14 @@ class ProductService {
     final DefaultResponse response = await _repository.findById(companyId, id);
     return Product.fromJson(response.data as Map<String, dynamic>);
   }
+
+  Future<double> replenish(
+    String companyId,
+    String id, [
+    double quantity = 0.0,
+  ]) async {
+    final DefaultResponse response =
+        await _repository.addInventory(companyId, id, quantity);
+    return response.data as double;
+  }
 }

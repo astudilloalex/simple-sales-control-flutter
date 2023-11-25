@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
@@ -37,6 +38,11 @@ class HomePage extends StatelessWidget {
           }
           return const Placeholder();
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text(AppLocalizations.of(context)!.sell),
+        icon: const FaIcon(FontAwesomeIcons.handPointer),
       ),
     );
   }

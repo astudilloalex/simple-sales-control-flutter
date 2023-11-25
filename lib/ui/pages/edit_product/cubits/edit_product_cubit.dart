@@ -17,6 +17,8 @@ class EditProductCubit extends Cubit<EditProductState> {
   final ProductService service;
   final String? id;
 
+  Product? product;
+
   Future<String?> loadProduct(String companyId) async {
     Product? product;
     try {
@@ -33,7 +35,7 @@ class EditProductCubit extends Cubit<EditProductState> {
 
   Future<String?> addProduct(Product product) async {
     try {
-      await service.save(product);
+      emit(state.copyWith(product: await service.save(product)));
     } catch (e) {
       return e.toString();
     }
@@ -42,7 +44,7 @@ class EditProductCubit extends Cubit<EditProductState> {
 
   Future<String?> updateProduct(Product product) async {
     try {
-      await service.update(product);
+      emit(state.copyWith(product: await service.update(product)));
     } catch (e) {
       return e.toString();
     }

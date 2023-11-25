@@ -55,4 +55,27 @@ class ProductCubit extends Cubit<ProductState> {
     products[index] = product;
     emit(state.copyWith(products: [...products]));
   }
+
+  Future<String?> replenish(
+    String companyId,
+    String productId,
+    double quantity,
+  ) async {
+    try {
+      final int index =
+          state.products.indexWhere((element) => element.id == productId);
+      if (index < 0) return null;
+      final double newQuantity = await service.replenish(
+        companyId,
+        productId,
+        quantity,
+      );
+      final List<Product> products = state.products;
+      products[index] = products[index].copyWith(quantity: newQuantity);
+      emit(state.copyWith(products: [...products]));
+    } on Exception catch (e) {
+      return e.toString();
+    } finally {}
+    return null;
+  }
 }

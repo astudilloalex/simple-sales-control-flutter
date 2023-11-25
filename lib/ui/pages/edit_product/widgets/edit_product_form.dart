@@ -286,7 +286,7 @@ class _EditProductFormState extends State<EditProductForm> {
     if (error != null) {
       showErrorSnackbar(context, error);
     } else {
-      context.pop(product);
+      context.pop(cubit.state.product);
     }
   }
 
