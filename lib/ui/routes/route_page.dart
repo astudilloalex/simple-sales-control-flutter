@@ -4,10 +4,15 @@ import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/company/application/company_service.dart';
+import 'package:sales_control/src/customer/application/customer_service.dart';
 import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
+import 'package:sales_control/ui/pages/customer/cubits/customer_cubit.dart';
+import 'package:sales_control/ui/pages/customer/customer_page.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
 import 'package:sales_control/ui/pages/edit_company/edit_company_page.dart';
+import 'package:sales_control/ui/pages/edit_customer/cubits/edit_customer_cubit.dart';
+import 'package:sales_control/ui/pages/edit_customer/edit_customer_page.dart';
 import 'package:sales_control/ui/pages/edit_product/cubits/edit_product_cubit.dart';
 import 'package:sales_control/ui/pages/edit_product/edit_product_page.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_cubit.dart';
@@ -36,6 +41,17 @@ class RoutePage {
     initialLocation: RouteName.splash,
     routes: [
       GoRoute(
+        path: RouteName.addCustomer,
+        name: RouteName.addCustomer,
+        builder: (context, state) => BlocProvider(
+          create: (context) => EditCustomerCubit(
+            companyId: context.read<AppCubit>().state.companyId,
+            service: getIt<CustomerService>(),
+          ),
+          child: const EditCustomerPage(),
+        ),
+      ),
+      GoRoute(
         path: RouteName.addProduct,
         name: RouteName.addProduct,
         builder: (context, state) => BlocProvider(
@@ -47,6 +63,17 @@ class RoutePage {
         ),
       ),
       GoRoute(
+        path: RouteName.customer,
+        name: RouteName.customer,
+        builder: (context, state) => BlocProvider(
+          create: (context) => CustomerCubit(
+            service: getIt<CustomerService>(),
+            companyId: context.read<AppCubit>().state.companyId,
+          )..load(),
+          child: const CustomerPage(),
+        ),
+      ),
+      GoRoute(
         path: RouteName.editCompany,
         name: RouteName.editCompany,
         builder: (context, state) => BlocProvider(
@@ -55,6 +82,18 @@ class RoutePage {
             companyService: getIt<CompanyService>(),
           ),
           child: const EditCompanyPage(),
+        ),
+      ),
+      GoRoute(
+        path: RouteName.editCustomer,
+        name: RouteName.editCustomer,
+        builder: (context, state) => BlocProvider(
+          create: (context) => EditCustomerCubit(
+            id: state.pathParameters['id'] ?? '',
+            service: getIt<CustomerService>(),
+            companyId: context.read<AppCubit>().state.companyId,
+          ),
+          child: const EditCustomerPage(),
         ),
       ),
       GoRoute(

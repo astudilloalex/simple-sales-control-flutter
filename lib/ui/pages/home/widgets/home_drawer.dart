@@ -80,6 +80,16 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(FontAwesomeIcons.person),
+            title: Text(AppLocalizations.of(context)!.customers),
+            onTap: () {
+              if (Scaffold.of(context).isDrawerOpen) {
+                context.pop();
+              }
+              context.pushNamed(RouteName.customer);
+            },
+          ),
+          ListTile(
             leading: const Icon(FontAwesomeIcons.productHunt),
             title: Text(AppLocalizations.of(context)!.products),
             onTap: () {

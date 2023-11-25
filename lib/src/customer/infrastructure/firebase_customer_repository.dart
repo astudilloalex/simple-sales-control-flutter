@@ -17,8 +17,8 @@ class FirebaseCustomerRepository implements ICustomerRepository {
     QuerySnapshot<Map<String, dynamic>> firebaseData;
     if (lastElement != null) {
       firebaseData = await _collection(companyId)
-          .orderBy('firstName')
-          .startAfter([lastElement.firstName])
+          .orderBy('lastName')
+          .startAfter([lastElement.lastName])
           .limit(size)
           .get();
     } else {
