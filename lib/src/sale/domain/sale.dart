@@ -1,0 +1,3 @@
+class Sale {
+  const Sale();
+}
