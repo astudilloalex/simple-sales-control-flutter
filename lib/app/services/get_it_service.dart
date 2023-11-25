@@ -8,6 +8,9 @@ import 'package:sales_control/src/auth/infrastructure/firebase_auth_repository.d
 import 'package:sales_control/src/company/application/company_service.dart';
 import 'package:sales_control/src/company/domain/i_company_repository.dart';
 import 'package:sales_control/src/company/infrastructure/firebase_company_repository.dart';
+import 'package:sales_control/src/customer/application/customer_service.dart';
+import 'package:sales_control/src/customer/domain/i_customer_repository.dart';
+import 'package:sales_control/src/customer/infrastructure/firebase_customer_repository.dart';
 import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/file/domain/i_file_repository.dart';
 import 'package:sales_control/src/file/infrastructure/firebase_file_repository.dart';
@@ -33,6 +36,9 @@ void setupGetIt() {
   getIt.registerLazySingleton<ICompanyRepository>(
     () => FirebaseCompanyRepository(firestore),
   );
+  getIt.registerLazySingleton<ICustomerRepository>(
+    () => FirebaseCustomerRepository(firestore),
+  );
   getIt.registerLazySingleton<IFileRepository>(
     () => FirebaseFileRepository(firebaseStorage),
   );
@@ -51,6 +57,11 @@ void setupGetIt() {
     () => CompanyService(
       getIt<ICompanyRepository>(),
       authRepository: getIt<IAuthRepository>(),
+    ),
+  );
+  getIt.registerFactory<CustomerService>(
+    () => CustomerService(
+      getIt<ICustomerRepository>(),
     ),
   );
   getIt.registerFactory<FileService>(

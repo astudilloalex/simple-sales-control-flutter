@@ -40,6 +40,7 @@ class ProductService {
 
   Future<Product?> getById(String companyId, String id) async {
     final DefaultResponse response = await _repository.findById(companyId, id);
+    if (response.data == null) return null;
     return Product.fromJson(response.data as Map<String, dynamic>);
   }
 

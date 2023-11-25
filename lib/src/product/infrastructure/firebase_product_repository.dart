@@ -64,13 +64,6 @@ class FirebaseProductRepository implements IProductRepository {
     );
   }
 
-  CollectionReference<Map<String, dynamic>> _collection(String companyId) {
-    return _client
-        .collection('companies')
-        .doc(companyId)
-        .collection('products');
-  }
-
   @override
   Future<DefaultResponse> addInventory(
     String companyId,
@@ -92,5 +85,12 @@ class FirebaseProductRepository implements IProductRepository {
       );
     });
     return DefaultResponse(data: newQuantity);
+  }
+
+  CollectionReference<Map<String, dynamic>> _collection(String companyId) {
+    return _client
+        .collection('companies')
+        .doc(companyId)
+        .collection('products');
   }
 }
