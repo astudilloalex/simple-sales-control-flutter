@@ -23,7 +23,7 @@ class FirebaseCustomerRepository implements ICustomerRepository {
           .get();
     } else {
       firebaseData =
-          await _collection(companyId).orderBy('firstName').limit(size).get();
+          await _collection(companyId).orderBy('lastName').limit(size).get();
     }
     return DefaultResponse(
       data: firebaseData.docs.map((e) => e.data()).toList(),
@@ -59,6 +59,14 @@ class FirebaseCustomerRepository implements ICustomerRepository {
     });
     return DefaultResponse(
       data: customer.toJson(),
+    );
+  }
+
+  @override
+  Future<DefaultResponse> delete(String companyId, String id) async {
+    await _collection(companyId).doc(id).delete();
+    return const DefaultResponse(
+      data: true,
     );
   }
 

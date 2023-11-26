@@ -12,4 +12,5 @@ abstract class ICustomerRepository {
     Customer? lastElement,
   ]);
   Future<DefaultResponse> findById(String companyId, String id);
+  Future<DefaultResponse> delete(String companyId, String id);
 }

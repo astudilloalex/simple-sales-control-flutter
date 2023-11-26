@@ -59,6 +59,18 @@ class CustomerCubit extends Cubit<CustomerState> {
     }
   }
 
+  Future<String?> delete(Customer customer) async {
+    try {
+      await service.delete(companyId, customer.id);
+      final List<Customer> customers = state.customers;
+      customers.removeWhere((c) => c.id == customer.id);
+      emit(state.copyWith(customers: customers));
+    } on Exception catch (e) {
+      return e.toString();
+    }
+    return null;
+  }
+
   void addCustomer(Customer? customer) {
     if (customer == null) return;
     emit(state.copyWith(customers: [...state.customers, customer]));

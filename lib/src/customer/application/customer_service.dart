@@ -37,4 +37,8 @@ class CustomerService {
         .map((json) => Customer.fromJson(json as Map<String, dynamic>))
         .toList();
   }
+
+  Future<void> delete(String companyId, String id) async {
+    await _repository.delete(companyId, id);
+  }
 }

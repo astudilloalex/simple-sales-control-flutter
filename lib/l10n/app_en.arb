@@ -2,7 +2,9 @@
     "add": "Add",
     "addCustomer": "Add customer",
     "addProduct": "Add product",
+    "areYouSure": "Are you sure?",
     "customers": "Customers",
+    "delete": "Delete",
     "description": "Description",
     "editCompany": "Edit company",
     "editCustomer": "Edit customer",
@@ -18,6 +20,7 @@
     "lastName": "Last name",
     "myCompany": "My company",
     "name": "Name",
+    "no": "No",
     "price": "Price",
     "products": "Products",
     "quantity": "Quantity",
@@ -29,5 +32,6 @@
     "settings": "Settings",
     "signInWithGoogle": "Sign in with Google",
     "update": "Update",
-    "users": "Users"
+    "users": "Users",
+    "yes": "Yes"
 }
