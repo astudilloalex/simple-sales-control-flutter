@@ -39,18 +39,18 @@ class SettingPage extends StatelessWidget {
               ),
             ),
           ),
-          InkWell(
-            onTap: () => context.pushNamed(RouteName.user),
-            child: Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(FontAwesomeIcons.user),
-                  Text(AppLocalizations.of(context)!.users),
-                ],
-              ),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () => context.pushNamed(RouteName.user),
+          //   child: Card(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         const Icon(FontAwesomeIcons.user),
+          //         Text(AppLocalizations.of(context)!.users),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

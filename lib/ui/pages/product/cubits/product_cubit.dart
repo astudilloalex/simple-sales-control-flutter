@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/src/product/domain/product.dart';
@@ -7,12 +8,17 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit({
     required this.service,
     required this.companyId,
-  }) : super(const ProductState());
+  }) : super(const ProductState()) {
+    productListController.addListener(_onScrollProductList);
+  }
 
   final ProductService service;
   final String companyId;
 
-  int pageSize = 100;
+  final ScrollController productListController = ScrollController();
+  final int pageSize = 25;
+
+  bool hasMoreProducts = true;
 
   Future<void> load() async {
     List<Product> data = [];
@@ -38,6 +44,36 @@ class ProductCubit extends Cubit<ProductState> {
           loadingError: error,
         ),
       );
+    }
+  }
+
+  Future<void> _onScrollProductList() async {
+    if (productListController.position.pixels ==
+            productListController.position.maxScrollExtent &&
+        hasMoreProducts &&
+        !state.loadingPagination) {
+      List<Product> products = [];
+      try {
+        emit(state.copyWith(loadingPagination: true));
+        products = await service.findAll(
+          companyId,
+          pageSize,
+          state.products.last,
+        );
+        if (products.isEmpty || products.length < pageSize) {
+          hasMoreProducts = false;
+        }
+      } on Exception catch (e) {
+        emit(state.copyWith(loadingError: e.toString()));
+      } finally {
+        emit(
+          state.copyWith(
+            loading: false,
+            loadingPagination: false,
+            products: [...state.products, ...products],
+          ),
+        );
+      }
     }
   }
 
@@ -77,5 +113,11 @@ class ProductCubit extends Cubit<ProductState> {
       return e.toString();
     } finally {}
     return null;
+  }
+
+  @override
+  Future<void> close() {
+    productListController.dispose();
+    return super.close();
   }
 }

@@ -16,7 +16,7 @@ class CustomerCubit extends Cubit<CustomerState> {
   final String companyId;
 
   final ScrollController customerListController = ScrollController();
-  final int size = 25;
+  final int pageSize = 25;
 
   bool hasMoreCustomers = true;
 
@@ -24,7 +24,7 @@ class CustomerCubit extends Cubit<CustomerState> {
     List<Customer> customers = [];
     try {
       emit(state.copyWith(loading: true));
-      customers = await service.findAll(companyId, size, lastElement);
+      customers = await service.findAll(companyId, pageSize, lastElement);
       if (customers.isEmpty) hasMoreCustomers = false;
     } on Exception catch (e) {
       emit(state.copyWith(loadingError: e.toString()));
@@ -36,22 +36,26 @@ class CustomerCubit extends Cubit<CustomerState> {
   Future<void> _onScrollCustomerList() async {
     if (customerListController.position.pixels ==
             customerListController.position.maxScrollExtent &&
-        hasMoreCustomers) {
+        hasMoreCustomers &&
+        !state.loadingPagination) {
       List<Customer> customers = [];
       try {
-        emit(state.copyWith(loading: true));
+        emit(state.copyWith(loadingPagination: true));
         customers = await service.findAll(
           companyId,
-          size,
+          pageSize,
           state.customers.last,
         );
-        if (customers.isEmpty) hasMoreCustomers = false;
+        if (customers.isEmpty || customers.length < pageSize) {
+          hasMoreCustomers = false;
+        }
       } on Exception catch (e) {
         emit(state.copyWith(loadingError: e.toString()));
       } finally {
         emit(
           state.copyWith(
             loading: false,
+            loadingPagination: false,
             customers: [...state.customers, ...customers],
           ),
         );
