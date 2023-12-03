@@ -21,6 +21,8 @@ import 'package:sales_control/ui/pages/onboarding/cubits/onboarding_cubit.dart';
 import 'package:sales_control/ui/pages/onboarding/onboarding_page.dart';
 import 'package:sales_control/ui/pages/product/cubits/product_cubit.dart';
 import 'package:sales_control/ui/pages/product/product_page.dart';
+import 'package:sales_control/ui/pages/sell/cubits/sell_cubit.dart';
+import 'package:sales_control/ui/pages/sell/sell_page.dart';
 import 'package:sales_control/ui/pages/setting/cubits/setting_cubit.dart';
 import 'package:sales_control/ui/pages/setting/setting_page.dart';
 import 'package:sales_control/ui/pages/sign_in/cubits/sign_in_cubit.dart';
@@ -135,6 +137,14 @@ class RoutePage {
             companyId: context.read<AppCubit>().state.companyId,
           )..load(),
           child: const ProductPage(),
+        ),
+      ),
+      GoRoute(
+        path: RouteName.sell,
+        name: RouteName.sell,
+        builder: (context, state) => BlocProvider(
+          create: (context) => SellCubit(),
+          child: const SellPage(),
         ),
       ),
       GoRoute(

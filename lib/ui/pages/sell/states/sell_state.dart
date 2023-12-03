@@ -1,0 +1,3 @@
+class SellState {
+  const SellState();
+}

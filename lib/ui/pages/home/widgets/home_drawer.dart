@@ -7,7 +7,6 @@ import 'package:sales_control/src/auth/domain/auth.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_drawer_cubit.dart';
 import 'package:sales_control/ui/pages/home/states/home_drawer_state.dart';
 import 'package:sales_control/ui/routes/route_name.dart';
-import 'package:sales_control/ui/widgets/qr_modal_bottom_sheet.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
@@ -38,7 +37,7 @@ class HomeDrawer extends StatelessWidget {
                                 radius: 35.0,
                               ),
                             ),
-                            Positioned(
+                            /* Positioned(
                               right: 0.0,
                               top: 15.0,
                               child: IconButton(
@@ -59,7 +58,7 @@ class HomeDrawer extends StatelessWidget {
                                       },
                                 icon: const Icon(FontAwesomeIcons.shareNodes),
                               ),
-                            ),
+                            ), */
                           ],
                         ),
                       ),

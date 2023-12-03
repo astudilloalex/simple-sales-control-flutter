@@ -13,6 +13,7 @@ class RouteName {
   static const String home = '/home';
   static const String onboarding = '/onboarding';
   static const String product = '/product';
+  static const String sell = '/sell';
   static const String setting = '/setting';
   static const String signIn = '/sign-in';
   static const String splash = '/splash';

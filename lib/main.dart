@@ -19,7 +19,7 @@ import 'package:sales_control/ui/routes/route_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  setupGetIt();
+  await setupGetIt();
   // Check crash app error with crashlytics
   FlutterError.onError = (details) =>
       FirebaseCrashlytics.instance.recordFlutterFatalError(details);

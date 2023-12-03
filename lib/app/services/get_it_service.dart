@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:get_it/get_it.dart';
+import 'package:sales_control/app/services/i_sqlite.dart';
+import 'package:sales_control/app/services/mobile_sqlite.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/auth/domain/i_auth_repository.dart';
 import 'package:sales_control/src/auth/infrastructure/firebase_auth_repository.dart';
@@ -20,10 +23,19 @@ import 'package:sales_control/src/product/infrastructure/firebase_product_reposi
 import 'package:sales_control/src/role/application/role_service.dart';
 import 'package:sales_control/src/role/domain/i_role_repository.dart';
 import 'package:sales_control/src/role/infrastructure/firebase_role_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 GetIt getIt = GetIt.instance;
 
-void setupGetIt() {
+Future<void> setupGetIt() async {
+  // Local database
+  if (!kIsWeb) {
+    getIt.registerSingletonAsync<ISQLite>(
+      () async => MobileSQLite.getInstance(await getDatabasesPath()),
+    );
+    await getIt.isReady<MobileSQLite>();
+  }
+
   // Declare services to pass to other services.
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
