@@ -105,6 +105,8 @@ class _EditCustomerFormState extends State<EditCustomerForm> {
       firstName: firstNameController.text.trim(),
       lastName: lastNameController.text.trim(),
       idCard: idCardController.text.trim(),
+      fullName:
+          '${firstNameController.text.trim()} ${lastNameController.text.trim()}',
     );
     final String? error = await cubit.saveOrUpdate(customer);
     if (!mounted) return;

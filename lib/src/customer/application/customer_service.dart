@@ -41,4 +41,17 @@ class CustomerService {
   Future<void> delete(String companyId, String id) async {
     await _repository.delete(companyId, id);
   }
+
+  Future<List<Customer>> getByIdCardOrFullName(
+    String companyId,
+    String value,
+  ) async {
+    final bool isIdCard = RegExp(r'\d').hasMatch(value);
+    final DefaultResponse response = isIdCard
+        ? await _repository.findByIdCard(companyId, value)
+        : await _repository.findByFullName(companyId, value);
+    return (response.data as List<dynamic>)
+        .map((json) => Customer.fromJson(json as Map<String, dynamic>))
+        .toList();
+  }
 }

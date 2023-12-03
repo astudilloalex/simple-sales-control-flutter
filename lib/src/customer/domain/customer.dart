@@ -10,6 +10,7 @@ class Customer {
     this.idCard = '',
     this.firstName = '',
     this.lastName = '',
+    required this.fullName,
   });
 
   final String id;
@@ -17,6 +18,7 @@ class Customer {
   final String idCard;
   final String firstName;
   final String lastName;
+  final String fullName;
 
   Customer copyWith({
     String? companyId,
@@ -24,6 +26,7 @@ class Customer {
     String? idCard,
     String? firstName,
     String? lastName,
+    String? fullName,
   }) {
     return Customer(
       companyId: companyId ?? this.companyId,
@@ -31,6 +34,7 @@ class Customer {
       firstName: firstName ?? this.firstName,
       idCard: idCard ?? this.idCard,
       lastName: lastName ?? this.lastName,
+      fullName: fullName ?? this.fullName,
     );
   }
 

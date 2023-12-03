@@ -30,25 +30,31 @@ class SQLiteCustomerSearchHistoryRepository
       whereArgs: [entity.value],
     );
     if (data.isEmpty) {
+      final Map<String, dynamic> json = entity.toJson();
+      json.removeWhere((key, value) => key == 'id');
       return DefaultResponse(
-        data: entity.copyWith(
-          id: await db.insert(
-            'customer_search_history',
-            entity.toJson(),
-          ),
-        ),
+        data: entity
+            .copyWith(
+              id: await db.insert(
+                'customer_search_history',
+                json,
+              ),
+            )
+            .toJson(),
       );
     } else {
       final CustomerSearchHistory finded = CustomerSearchHistory.fromJson(
         data.first,
       );
+      final Map<String, dynamic> json = entity.toJson();
+      json.removeWhere((key, value) => key == 'id');
       await db.update(
         'customer_search_history',
-        entity.toJson(),
+        json,
         where: 'id = ?',
         whereArgs: [finded.id],
       );
-      return DefaultResponse(data: entity.copyWith(id: finded.id));
+      return DefaultResponse(data: entity.copyWith(id: finded.id).toJson());
     }
   }
 }

@@ -14,6 +14,9 @@ import 'package:sales_control/src/company/infrastructure/firebase_company_reposi
 import 'package:sales_control/src/customer/application/customer_service.dart';
 import 'package:sales_control/src/customer/domain/i_customer_repository.dart';
 import 'package:sales_control/src/customer/infrastructure/firebase_customer_repository.dart';
+import 'package:sales_control/src/customer_search_history/application/customer_search_history_service.dart';
+import 'package:sales_control/src/customer_search_history/domain/i_customer_search_history_repository.dart';
+import 'package:sales_control/src/customer_search_history/infrastructure/sqlite_customer_search_history_repository.dart';
 import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/file/domain/i_file_repository.dart';
 import 'package:sales_control/src/file/infrastructure/firebase_file_repository.dart';
@@ -33,7 +36,7 @@ Future<void> setupGetIt() async {
     getIt.registerSingletonAsync<ISQLite>(
       () async => MobileSQLite.getInstance(await getDatabasesPath()),
     );
-    await getIt.isReady<MobileSQLite>();
+    await getIt.isReady<ISQLite>();
   }
 
   // Declare services to pass to other services.
@@ -50,6 +53,9 @@ Future<void> setupGetIt() async {
   );
   getIt.registerLazySingleton<ICustomerRepository>(
     () => FirebaseCustomerRepository(firestore),
+  );
+  getIt.registerLazySingleton<ICustomerSearchHistoryRepository>(
+    () => SQLiteCustomerSearchHistoryRepository(getIt<ISQLite>()),
   );
   getIt.registerLazySingleton<IFileRepository>(
     () => FirebaseFileRepository(firebaseStorage),
@@ -69,6 +75,11 @@ Future<void> setupGetIt() async {
     () => CompanyService(
       getIt<ICompanyRepository>(),
       authRepository: getIt<IAuthRepository>(),
+    ),
+  );
+  getIt.registerFactory<CustomerSearchHistoryService>(
+    () => CustomerSearchHistoryService(
+      getIt<ICustomerSearchHistoryRepository>(),
     ),
   );
   getIt.registerFactory<CustomerService>(

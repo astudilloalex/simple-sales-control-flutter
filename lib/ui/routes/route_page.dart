@@ -5,6 +5,7 @@ import 'package:sales_control/app/services/get_it_service.dart';
 import 'package:sales_control/src/auth/application/auth_service.dart';
 import 'package:sales_control/src/company/application/company_service.dart';
 import 'package:sales_control/src/customer/application/customer_service.dart';
+import 'package:sales_control/src/customer_search_history/application/customer_search_history_service.dart';
 import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/ui/pages/customer/cubits/customer_cubit.dart';
@@ -143,7 +144,9 @@ class RoutePage {
         path: RouteName.sell,
         name: RouteName.sell,
         builder: (context, state) => BlocProvider(
-          create: (context) => SellCubit(),
+          create: (context) => SellCubit(
+            customerSearchHistoryService: getIt<CustomerSearchHistoryService>(),
+          ),
           child: const SellPage(),
         ),
       ),

@@ -17,7 +17,7 @@ class CustomerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('${customer.lastName} ${customer.firstName}'),
+      title: Text(customer.fullName),
       subtitle: Text(customer.idCard),
       onTap: () {
         context.pushNamed<Customer?>(
