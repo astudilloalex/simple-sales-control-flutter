@@ -54,10 +54,10 @@ class ProductService {
     return response.data as double;
   }
 
-  Future<List<Product>> getByKeyword(String companyId, String keyword) async {
+  Future<List<Product>> getByKeyword(String companyId, String value) async {
     final DefaultResponse response = await _repository.findByKeyword(
       companyId,
-      keyword,
+      value.toUpperCase(),
     );
     return (response.data as List<dynamic>)
         .map((json) => Product.fromJson(json as Map<String, dynamic>))
