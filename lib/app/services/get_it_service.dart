@@ -23,6 +23,9 @@ import 'package:sales_control/src/file/infrastructure/firebase_file_repository.d
 import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/src/product/domain/i_product_repository.dart';
 import 'package:sales_control/src/product/infrastructure/firebase_product_repository.dart';
+import 'package:sales_control/src/product_search_history/application/product_search_history_service.dart';
+import 'package:sales_control/src/product_search_history/domain/i_product_search_history_repository.dart';
+import 'package:sales_control/src/product_search_history/infrastructure/sqlite_product_search_history_repository.dart';
 import 'package:sales_control/src/role/application/role_service.dart';
 import 'package:sales_control/src/role/domain/i_role_repository.dart';
 import 'package:sales_control/src/role/infrastructure/firebase_role_repository.dart';
@@ -63,6 +66,9 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<IProductRepository>(
     () => FirebaseProductRepository(firestore),
   );
+  getIt.registerLazySingleton<IProductSearchHistoryRepository>(
+    () => SQLiteProductSearchHistory(getIt<ISQLite>()),
+  );
   getIt.registerLazySingleton<IRoleRepository>(
     () => FirebaseRoleRepository(firestore),
   );
@@ -92,6 +98,9 @@ Future<void> setupGetIt() async {
   );
   getIt.registerFactory<ProductService>(
     () => ProductService(getIt<IProductRepository>()),
+  );
+  getIt.registerFactory<ProductSearchHistoryService>(
+    () => ProductSearchHistoryService(getIt<IProductSearchHistoryRepository>()),
   );
   getIt.registerFactory<RoleService>(
     () => RoleService(getIt<IRoleRepository>()),

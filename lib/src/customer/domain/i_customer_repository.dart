@@ -15,4 +15,5 @@ abstract class ICustomerRepository {
   Future<DefaultResponse> delete(String companyId, String id);
   Future<DefaultResponse> findByFullName(String companyId, String fullName);
   Future<DefaultResponse> findByIdCard(String companyId, String idCard);
+  Future<DefaultResponse> findByKeyword(String companyId, String value);
 }

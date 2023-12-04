@@ -21,4 +21,6 @@ abstract class IProductRepository {
     String id,
     double quantity,
   );
+
+  Future<DefaultResponse> findByKeyword(String companyId, String value);
 }

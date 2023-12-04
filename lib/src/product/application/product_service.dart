@@ -53,4 +53,14 @@ class ProductService {
         await _repository.addInventory(companyId, id, quantity);
     return response.data as double;
   }
+
+  Future<List<Product>> getByKeyword(String companyId, String keyword) async {
+    final DefaultResponse response = await _repository.findByKeyword(
+      companyId,
+      keyword,
+    );
+    return (response.data as List<dynamic>)
+        .map((json) => Product.fromJson(json as Map<String, dynamic>))
+        .toList();
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sales_control/src/common/domain/default_response.dart';
+import 'package:sales_control/src/common/domain/util.dart';
 import 'package:sales_control/src/customer/domain/customer.dart';
 import 'package:sales_control/src/customer/domain/i_customer_repository.dart';
 
@@ -44,7 +45,11 @@ class FirebaseCustomerRepository implements ICustomerRepository {
     final DocumentReference<Map<String, dynamic>> doc =
         _collection(customer.companyId).doc();
     final Customer saved = customer.copyWith(id: doc.id);
-    await doc.set(saved.toJson());
+    final Map<String, dynamic> json = saved.toJson();
+    json.addAll({
+      'keywords': generateKeywords(customer.fullName.toUpperCase()),
+    });
+    await doc.set(json);
     return DefaultResponse(
       data: saved.toJson(),
     );
@@ -57,6 +62,7 @@ class FirebaseCustomerRepository implements ICustomerRepository {
       'firstName': customer.firstName,
       'lastName': customer.lastName,
       'fullName': customer.fullName,
+      'keywords': generateKeywords(customer.fullName.toUpperCase()),
     });
     return DefaultResponse(
       data: customer.toJson(),
@@ -69,13 +75,6 @@ class FirebaseCustomerRepository implements ICustomerRepository {
     return const DefaultResponse(
       data: true,
     );
-  }
-
-  CollectionReference<Map<String, dynamic>> _collection(String companyId) {
-    return _client
-        .collection('companies')
-        .doc(companyId)
-        .collection('customers');
   }
 
   @override
@@ -95,5 +94,21 @@ class FirebaseCustomerRepository implements ICustomerRepository {
     final QuerySnapshot<Map<String, dynamic>> data =
         await _collection(companyId).where('idCard', isEqualTo: idCard).get();
     return DefaultResponse(data: data.docs.map((e) => e.data()).toList());
+  }
+
+  @override
+  Future<DefaultResponse> findByKeyword(String companyId, String value) async {
+    final QuerySnapshot<Map<String, dynamic>> data =
+        await _collection(companyId)
+            .where('keywords', arrayContains: value)
+            .get();
+    return DefaultResponse(data: data.docs.map((e) => e.data()).toList());
+  }
+
+  CollectionReference<Map<String, dynamic>> _collection(String companyId) {
+    return _client
+        .collection('companies')
+        .doc(companyId)
+        .collection('customers');
   }
 }

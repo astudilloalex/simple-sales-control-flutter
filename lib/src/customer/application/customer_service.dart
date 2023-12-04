@@ -42,14 +42,14 @@ class CustomerService {
     await _repository.delete(companyId, id);
   }
 
-  Future<List<Customer>> getByIdCardOrFullName(
+  Future<List<Customer>> getByIdCardOrKeyword(
     String companyId,
     String value,
   ) async {
     final bool isIdCard = RegExp(r'\d').hasMatch(value);
     final DefaultResponse response = isIdCard
         ? await _repository.findByIdCard(companyId, value)
-        : await _repository.findByFullName(companyId, value);
+        : await _repository.findByKeyword(companyId, value.toUpperCase());
     return (response.data as List<dynamic>)
         .map((json) => Customer.fromJson(json as Map<String, dynamic>))
         .toList();

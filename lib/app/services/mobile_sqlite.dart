@@ -13,12 +13,7 @@ class MobileSQLite implements ISQLite {
       version: 1,
       onCreate: (db, version) async {
         if (version == 1) {
-          await db.execute('''
-CREATE TABLE customer_search_history (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  value TEXT NOT NULL,
-  date DATETIME NOT NULL
-)''');
+          await db.execute(createSQLV1);
         }
       },
       onConfigure: (db) async {

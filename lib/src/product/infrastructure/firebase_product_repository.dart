@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:decimal/decimal.dart';
 import 'package:sales_control/src/common/domain/default_response.dart';
+import 'package:sales_control/src/common/domain/util.dart';
 import 'package:sales_control/src/product/domain/i_product_repository.dart';
 import 'package:sales_control/src/product/domain/product.dart';
 
@@ -45,7 +46,11 @@ class FirebaseProductRepository implements IProductRepository {
     final DocumentReference<Map<String, dynamic>> doc =
         _collection(companyId).doc();
     final Product savedProduct = product.copyWith(id: doc.id);
-    await doc.set(savedProduct.toJson());
+    final Map<String, dynamic> json = savedProduct.toJson();
+    json.addAll({
+      'keywords': generateKeywords(product.name.toUpperCase()),
+    });
+    await doc.set(json);
     return DefaultResponse(
       data: savedProduct.toJson(),
     );
@@ -58,6 +63,7 @@ class FirebaseProductRepository implements IProductRepository {
       'description': product.description,
       'photoUrls': product.photoUrls,
       'price': product.price,
+      'keywords': generateKeywords(product.name.toUpperCase()),
     });
     return DefaultResponse(
       data: product.toJson(),
@@ -85,6 +91,15 @@ class FirebaseProductRepository implements IProductRepository {
       );
     });
     return DefaultResponse(data: newQuantity);
+  }
+
+  @override
+  Future<DefaultResponse> findByKeyword(String companyId, String value) async {
+    final QuerySnapshot<Map<String, dynamic>> data =
+        await _collection(companyId)
+            .where('keywords', arrayContains: value)
+            .get();
+    return DefaultResponse(data: data.docs.map((e) => e.data()).toList());
   }
 
   CollectionReference<Map<String, dynamic>> _collection(String companyId) {
