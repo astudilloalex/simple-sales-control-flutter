@@ -86,7 +86,21 @@ class ProductSearchDelegate extends SearchDelegate<Product?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-    throw UnimplementedError();
+    final List<ProductSearchHistory> filtered =
+        history.where((element) => element.value.contains(query)).toList();
+    return ListView.separated(
+      separatorBuilder: (context, index) => const Divider(height: 0.0),
+      itemCount: filtered.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: const FaIcon(FontAwesomeIcons.clockRotateLeft),
+          title: Text(filtered[index].value),
+          onTap: () {
+            query = filtered[index].value;
+            showResults(context);
+          },
+        );
+      },
+    );
   }
 }

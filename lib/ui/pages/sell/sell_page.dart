@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_control/app/cubits/app_cubit.dart';
+import 'package:sales_control/src/product/domain/product.dart';
 import 'package:sales_control/ui/pages/sell/cubits/sell_cubit.dart';
 import 'package:sales_control/ui/pages/sell/widgets/sell_customer_information.dart';
 import 'package:sales_control/ui/pages/sell/widgets/sell_detail_list.dart';
+import 'package:sales_control/ui/widgets/product_search_delegate.dart';
 
 class SellPage extends StatelessWidget {
   const SellPage({super.key});
@@ -63,7 +66,14 @@ class SellPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showSearch<Product?>(
+                        context: context,
+                        delegate: ProductSearchDelegate(
+                          companyId: context.read<AppCubit>().state.companyId,
+                        ),
+                      );
+                    },
                     icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
                   ),
                   IconButton(

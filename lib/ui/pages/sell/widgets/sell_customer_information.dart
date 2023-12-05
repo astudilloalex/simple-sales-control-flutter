@@ -31,7 +31,8 @@ class SellCustomerInformation extends StatelessWidget {
               onTap: () async {
                 context.loaderOverlay.show();
                 final SellCubit cubit = context.read<SellCubit>();
-                final List<CustomerSearchHistory> history = await cubit.history;
+                final List<CustomerSearchHistory> history =
+                    await cubit.customerHistory;
                 if (!context.mounted) return;
                 context.loaderOverlay.hide();
                 showSearch(

@@ -8,6 +8,7 @@ import 'package:sales_control/src/customer/application/customer_service.dart';
 import 'package:sales_control/src/customer_search_history/application/customer_search_history_service.dart';
 import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
+import 'package:sales_control/src/product_search_history/application/product_search_history_service.dart';
 import 'package:sales_control/ui/pages/customer/cubits/customer_cubit.dart';
 import 'package:sales_control/ui/pages/customer/customer_page.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
@@ -146,6 +147,7 @@ class RoutePage {
         builder: (context, state) => BlocProvider(
           create: (context) => SellCubit(
             customerSearchHistoryService: getIt<CustomerSearchHistoryService>(),
+            productSearchHistoryService: getIt<ProductSearchHistoryService>(),
           ),
           child: const SellPage(),
         ),
