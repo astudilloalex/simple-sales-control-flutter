@@ -1,6 +1,7 @@
 {
     "add": "Add",
     "addCustomer": "Add customer",
+    "addLeastOneProduct": "Add at least one product",
     "addProduct": "Add product",
     "areYouSure": "Are you sure?",
     "customer": "Customer",
@@ -11,6 +12,7 @@
     "editCompany": "Edit company",
     "editCustomer": "Edit customer",
     "editProduct": "Edit product",
+    "enterCustomerInformation": "Enter customer information",
     "fileSizeExceeded": "File size exceeded",
     "finish": "Finish",
     "firstName": "First name",
@@ -26,6 +28,7 @@
     "no": "No",
     "noResults": "No results",
     "price": "Price",
+    "proceedWithSale": "Proceed with sale",
     "products": "Products",
     "quantity": "Quantity",
     "reload": "Reload",

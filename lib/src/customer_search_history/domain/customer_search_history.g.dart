@@ -7,8 +7,7 @@ part of 'customer_search_history.dart';
 // **************************************************************************
 
 CustomerSearchHistory _$CustomerSearchHistoryFromJson(
-  Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     CustomerSearchHistory(
       id: json['id'] as int? ?? 0,
       value: json['value'] as String,
@@ -16,8 +15,7 @@ CustomerSearchHistory _$CustomerSearchHistoryFromJson(
     );
 
 Map<String, dynamic> _$CustomerSearchHistoryToJson(
-  CustomerSearchHistory instance,
-) =>
+        CustomerSearchHistory instance) =>
     <String, dynamic>{
       'id': instance.id,
       'value': instance.value,

@@ -8,14 +8,14 @@ abstract class ISQLite {
 
 const String createSQLV1 = '''
 CREATE TABLE customer_search_history (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id INTEGER PRIMARY KEY,
   value TEXT NOT NULL,
   date DATETIME NOT NULL
 );
 
 CREATE TABLE product_search_history (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id INTEGER PRIMARY KEY,
   value TEXT NOT NULL,
   date DATETIME NOT NULL
-);
+)
 ''';

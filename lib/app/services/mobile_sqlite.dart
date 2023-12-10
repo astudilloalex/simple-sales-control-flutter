@@ -12,9 +12,12 @@ class MobileSQLite implements ISQLite {
       join(path, 'localdatabase.db'),
       version: 1,
       onCreate: (db, version) async {
-        if (version == 1) {
-          await db.execute(createSQLV1);
+        final List<String> sqlList = createSQLV1.split(';');
+        final Batch batch = db.batch();
+        for (final String sql in sqlList) {
+          batch.execute(sql.trim());
         }
+        await batch.commit();
       },
       onConfigure: (db) async {
         await db.execute("PRAGMA foreign_keys = ON");

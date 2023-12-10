@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:sales_control/app/app.dart';
 import 'package:sales_control/app/cubits/app_cubit.dart';
 import 'package:sales_control/src/product/domain/product.dart';
+import 'package:sales_control/src/product_search_history/domain/product_search_history.dart';
 import 'package:sales_control/ui/pages/sell/cubits/sell_cubit.dart';
+import 'package:sales_control/ui/pages/sell/widgets/sell_app_bar.dart';
 import 'package:sales_control/ui/pages/sell/widgets/sell_customer_information.dart';
 import 'package:sales_control/ui/pages/sell/widgets/sell_detail_list.dart';
 import 'package:sales_control/ui/widgets/product_search_delegate.dart';
@@ -16,11 +20,9 @@ class SellPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.sell),
-      ),
       body: CustomScrollView(
         slivers: [
+          const SellAppBar(),
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               Padding(
@@ -66,13 +68,22 @@ class SellPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      final SellCubit cubit = context.read<SellCubit>();
+                      context.loaderOverlay.show();
+                      final List<ProductSearchHistory> history =
+                          await cubit.productHistory;
+                      if (!context.mounted) return;
+                      context.loaderOverlay.hide();
                       showSearch<Product?>(
                         context: context,
                         delegate: ProductSearchDelegate(
                           companyId: context.read<AppCubit>().state.companyId,
+                          history: history,
                         ),
-                      );
+                      ).then((value) {
+                        cubit.addProduct(value);
+                      });
                     },
                     icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
                   ),
@@ -93,13 +104,43 @@ class SellPage extends StatelessWidget {
           children: [
             ElevatedButton.icon(
               onPressed: () {
-                context.pop();
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: Text(AppLocalizations.of(context)!.sell),
+                      content: Text(
+                        '${AppLocalizations.of(context)!.proceedWithSale}: \$ ${context.read<SellCubit>().state.sale.total}',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            context.pop();
+                            _finalizeSale(context);
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.yes,
+                            style: const TextStyle(
+                              color: Colors.teal,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.pop();
+                          },
+                          child: Text(AppLocalizations.of(context)!.no),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               icon: const FaIcon(FontAwesomeIcons.tableList),
               label: Text(AppLocalizations.of(context)!.finish),
             ),
             Text(
-              '${AppLocalizations.of(context)!.total}\n${context.select((SellCubit value) => value.state.total)}',
+              '${AppLocalizations.of(context)!.total}\n${context.select((SellCubit value) => value.state.sale.total)}',
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -110,5 +151,23 @@ class SellPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _finalizeSale(BuildContext context) async {
+    final SellCubit cubit = context.read<SellCubit>();
+    if (cubit.state.customer == null) {
+      showErrorSnackbar(
+        context,
+        AppLocalizations.of(context)!.enterCustomerInformation,
+      );
+      return;
+    }
+    if (cubit.state.sale.saleDetails.isEmpty) {
+      showErrorSnackbar(
+        context,
+        AppLocalizations.of(context)!.addLeastOneProduct,
+      );
+      return;
+    }
   }
 }

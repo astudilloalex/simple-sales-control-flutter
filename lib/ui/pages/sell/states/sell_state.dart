@@ -1,26 +1,22 @@
 import 'package:sales_control/src/customer/domain/customer.dart';
-import 'package:sales_control/src/product/domain/product.dart';
+import 'package:sales_control/src/sale/domain/sale.dart';
 
 class SellState {
   const SellState({
     this.customer,
-    this.products = const [],
-    this.total = 0.0,
+    required this.sale,
   });
 
   final Customer? customer;
-  final List<Product> products;
-  final double total;
+  final Sale sale;
 
   SellState copyWith({
     Customer? customer,
-    List<Product>? products,
-    double? total,
+    Sale? sale,
   }) {
     return SellState(
       customer: customer ?? this.customer,
-      products: products ?? this.products,
-      total: total ?? this.total,
+      sale: sale ?? this.sale,
     );
   }
 }

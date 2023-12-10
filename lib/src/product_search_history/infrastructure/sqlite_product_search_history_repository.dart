@@ -12,7 +12,7 @@ class SQLiteProductSearchHistory implements IProductSearchHistoryRepository {
   @override
   Future<DefaultResponse> findAll([int page = 1, int size = 10]) async {
     final List<Map<String, dynamic>> data = await _sqlite.database.query(
-      'customer_search_history',
+      'product_search_history',
       offset: page - 1,
       limit: size,
       orderBy: 'date DESC',
