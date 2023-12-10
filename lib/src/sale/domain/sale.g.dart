@@ -7,6 +7,8 @@ part of 'sale.dart';
 // **************************************************************************
 
 Sale _$SaleFromJson(Map<String, dynamic> json) => Sale(
+      id: json['id'] as String? ?? '',
+      companyId: json['companyId'] as String? ?? '',
       customer: json['customer'] == null
           ? const Customer(fullName: '')
           : Customer.fromJson(json['customer'] as Map<String, dynamic>),
@@ -19,8 +21,10 @@ Sale _$SaleFromJson(Map<String, dynamic> json) => Sale(
     );
 
 Map<String, dynamic> _$SaleToJson(Sale instance) => <String, dynamic>{
+      'companyId': instance.companyId,
       'customer': instance.customer.toJson(),
       'dateTime': instance.dateTime.toIso8601String(),
+      'id': instance.id,
       'saleDetails': instance.saleDetails.map((e) => e.toJson()).toList(),
       'total': instance.total,
     };

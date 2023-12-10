@@ -9,6 +9,8 @@ import 'package:sales_control/src/customer_search_history/application/customer_s
 import 'package:sales_control/src/file/application/file_service.dart';
 import 'package:sales_control/src/product/application/product_service.dart';
 import 'package:sales_control/src/product_search_history/application/product_search_history_service.dart';
+import 'package:sales_control/src/sale/application/sale_service.dart';
+import 'package:sales_control/src/sale_summary/application/sale_summary_service.dart';
 import 'package:sales_control/ui/pages/customer/cubits/customer_cubit.dart';
 import 'package:sales_control/ui/pages/customer/customer_page.dart';
 import 'package:sales_control/ui/pages/edit_company/cubits/edit_company_cubit.dart';
@@ -118,6 +120,7 @@ class RoutePage {
         builder: (context, state) => BlocProvider(
           create: (context) => HomeCubit(
             authService: getIt<AuthService>(),
+            saleSummaryService: getIt<SaleSummaryService>(),
           )..load(),
           child: const HomePage(),
         ),
@@ -148,6 +151,7 @@ class RoutePage {
           create: (context) => SellCubit(
             customerSearchHistoryService: getIt<CustomerSearchHistoryService>(),
             productSearchHistoryService: getIt<ProductSearchHistoryService>(),
+            saleService: getIt<SaleService>(),
           ),
           child: const SellPage(),
         ),

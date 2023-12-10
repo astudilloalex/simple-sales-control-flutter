@@ -6,6 +6,7 @@ import 'package:sales_control/src/customer_search_history/domain/customer_search
 import 'package:sales_control/src/product/domain/product.dart';
 import 'package:sales_control/src/product_search_history/application/product_search_history_service.dart';
 import 'package:sales_control/src/product_search_history/domain/product_search_history.dart';
+import 'package:sales_control/src/sale/application/sale_service.dart';
 import 'package:sales_control/src/sale/domain/sale.dart';
 import 'package:sales_control/src/sale_detail/domain/sale_detail.dart';
 import 'package:sales_control/ui/pages/sell/states/sell_state.dart';
@@ -14,10 +15,12 @@ class SellCubit extends Cubit<SellState> {
   SellCubit({
     required this.customerSearchHistoryService,
     required this.productSearchHistoryService,
+    required this.saleService,
   }) : super(SellState(sale: Sale(dateTime: DateTime.now())));
 
   final CustomerSearchHistoryService customerSearchHistoryService;
   final ProductSearchHistoryService productSearchHistoryService;
+  final SaleService saleService;
 
   void addCustomer(Customer? customer) {
     if (customer == null) return;
@@ -102,7 +105,9 @@ class SellCubit extends Cubit<SellState> {
     return newQuantity;
   }
 
-  Future<String?> sell(String companyId) async {}
+  Future<String?> sell(String companyId) async {
+    return null;
+  }
 
   Future<List<CustomerSearchHistory>> get customerHistory async {
     return customerSearchHistoryService.getAll(1, 100);
