@@ -18,10 +18,8 @@ class FirebaseSaleSummaryRepository implements ISaleSummaryRepository {
       dateTime.day,
     );
     return _collection(companyId)
-        .where(
-          'dateTime',
-          isGreaterThanOrEqualTo: sixMonthsAgo,
-        )
+        .where('dateTime',
+            isGreaterThanOrEqualTo: sixMonthsAgo.toIso8601String())
         .orderBy('dateTime')
         .snapshots()
         .map(

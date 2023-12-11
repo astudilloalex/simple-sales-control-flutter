@@ -169,5 +169,16 @@ class SellPage extends StatelessWidget {
       );
       return;
     }
+    context.loaderOverlay.show();
+    final String? error = await cubit.sell(
+      context.read<AppCubit>().state.companyId,
+    );
+    if (!context.mounted) return;
+    context.loaderOverlay.hide();
+    if (error != null) {
+      showErrorSnackbar(context, error);
+    } else {
+      context.pop();
+    }
   }
 }

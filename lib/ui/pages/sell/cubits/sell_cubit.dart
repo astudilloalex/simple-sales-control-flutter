@@ -106,6 +106,13 @@ class SellCubit extends Cubit<SellState> {
   }
 
   Future<String?> sell(String companyId) async {
+    try {
+      await saleService.save(
+        state.sale.copyWith(companyId: companyId, customer: state.customer),
+      );
+    } on Exception catch (e) {
+      return e.toString();
+    }
     return null;
   }
 

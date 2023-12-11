@@ -11,6 +11,7 @@ import 'package:sales_control/ui/pages/home/cubits/home_cubit.dart';
 import 'package:sales_control/ui/pages/home/cubits/home_drawer_cubit.dart';
 import 'package:sales_control/ui/pages/home/states/home_state.dart';
 import 'package:sales_control/ui/pages/home/widgets/home_drawer.dart';
+import 'package:sales_control/ui/pages/home/widgets/sale_line_chart.dart';
 import 'package:sales_control/ui/routes/route_name.dart';
 
 class HomePage extends StatelessWidget {
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
             context.loaderOverlay.hide();
             context.read<AppCubit>().updateCurrentCompany(state.companyId);
           }
-          return const Placeholder();
+          return const SaleLineChart();
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
